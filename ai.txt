@@ -1,0 +1,8 @@
+# ai.txt — control para rastreadores de IA
+# Este archivo debe subirse a: https://ia.zerotekia.com/.well-known/ai.txt
+
+User-agent: *
+Allow: /
+Sitemap: https://ia.zerotekia.com/sitemap.xml
+Host: ia.zerotekia.com
+Contact: galvin@zerotekia.com

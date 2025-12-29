@@ -1,0 +1,35 @@
+# robots.txt para zerotekia.com
+# Este archivo debe subirse al dominio principal
+
+User-agent: *
+Allow: /
+
+# Archivos para descubrimiento de IA
+# Estos archivos están alojados en el subdominio ia.zerotekia.com
+Sitemap: https://ia.zerotekia.com/sitemap.xml
+
+# Referencia a archivos de IA (opcional, para documentación)
+# llms.txt: https://ia.zerotekia.com/.well-known/llms.txt
+# ai.txt: https://ia.zerotekia.com/.well-known/ai.txt
+
+# Rastreadores de IA permitidos
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
