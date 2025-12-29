@@ -1,0 +1,1622 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zerotekia | Automatización Inteligente + ROI</title>
+  <style>
+    /* FONTS */
+    @import url('https://fonts.googleapis.com/css2?family=Recursive:wght@300;400;500;600;700;800;900&display=swap');
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      /* EXACT EXTRACTED STYLES */
+      --font-body: "Recursive", system-ui, sans-serif;
+
+      --colors-canvas: rgb(248, 249, 250);
+      --colors-panel: #fefefe;
+      --colors-text: #333333;
+      --colors-muted: #66666b;
+      /* derived from gray-600 */
+      --colors-brand: #4299e1;
+      /* chakr-ring-color base or similar blue from snippet? NO, User wanted PINK. */
+      /* WAIT. The snippet shows Blue/Gray palette (rgba(65, 132, 244)). 
+         But User explicitly asked for PINK/WARM theme previously based on Logo. 
+         I will keep the PINK theme but adopt the FONTS and SHADOWS/SPACING from the snippet to match structure, 
+         while keeping the brand colors consistent with the Logo (Pink). 
+         Mixing: Recursive Font + Pink Brand + Gamma Shadows/Spacing. 
+       */
+
+      /* OLD PINK THEME (Kept for Brand) */
+      --brand: #e093a8;
+      --brand-2: #d67c94;
+
+      /* NEW VARS FROM SNIPPET */
+      --bg: rgb(248, 249, 250);
+      /* colors-canvas */
+      --card: #fefefe;
+      /* colors-panel */
+      --ink: #333333;
+      /* colors-text */
+      --muted: #66666b;
+      --line: #dfdfe0;
+      /* gray-200 */
+
+      --shadow: 0px 12px 17px rgba(0, 0, 0, 0.14);
+      /* shadows-12 */
+      --radius: 12px;
+      /* radii-3 */
+
+      --width-container: 1200px;
+
+      /* CHIP styles adapted */
+      --chip: #f5f5f6;
+      /* gray-50 */
+      --chip-on: #fff0f4;
+      /* pink tint */
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    button,
+    input,
+    select,
+    textarea {
+      font-family: var(--font-body);
+      /* Recursive Everywhere */
+      color: var(--ink);
+    }
+
+    /* NAV FIXED REFINED */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      padding: 20px 40px;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      /* Center the internal content line */
+      box-sizing: border-box;
+    }
+
+    nav.scrolled {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 12px 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-content {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      transition: all 0.3s ease;
+      margin-top: 55px;
+    }
+
+    nav.scrolled .nav-links {
+      margin-top: 0;
+    }
+
+    .nav-links a {
+      font-size: 21px;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    nav.scrolled .nav-links a {
+      color: var(--ink);
+      text-shadow: none;
+    }
+
+    .logo img {
+      height: 130px;
+      width: auto;
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled .logo img {
+      height: 80px;
+    }
+
+    .wrap {
+      max-width: var(--width-container, 1100px);
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    /* HERO */
+    header {
+      text-align: center;
+      padding: 180px 24px 60px;
+      /* Reduced from 260px / 80px */
+      background-color: #3f3b52;
+      border-radius: 24px;
+      color: #ffffff;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-logo-img {
+      width: 280px;
+      /* Enlarge logo */
+      height: auto;
+      margin-bottom: 24px;
+      /* Invert to white if original is dark. */
+      filter: brightness(0) invert(1);
+    }
+
+    /* REMOVED company-title styling as it is being removed from HTML */
+
+    h1 {
+      font-family: serif;
+      /* Updated to match screenshot */
+      font-size: clamp(32px, 5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin: 24px auto;
+      color: #ffffff;
+      max-width: 800px;
+    }
+
+    .sub {
+      font-family: serif;
+      /* Updated to match screenshot */
+      color: #ffffff;
+      /* Explicitly white as in screenshot */
+      max-width: 750px;
+      margin: 0 auto 40px;
+      font-size: 20px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 60px;
+    }
+
+    /* CONTENT SECTIONS */
+    section {
+      padding: 30px 0;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .section-desc {
+      text-align: center;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: #fff;
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      /* Permanent shadow */
+      transition: transform 0.2s;
+      flex: 1 1 300px;
+      /* Flex grow, shrink, basis */
+      max-width: 500px;
+      /* Prevent overly wide cards on large screens */
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: #c4b5fd;
+      box-shadow: 0 20px 40px rgba(83, 30, 48, 0.12);
+      /* Stronger shadow on hover */
+    }
+
+    .feature-card i {
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: inline-block;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .feature-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 0;
+    }
+
+    .feature-card li {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 18px;
+      line-height: 1.4;
+    }
+
+    .feature-card li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--brand);
+      font-weight: bold;
+    }
+
+
+    /* CALCULATOR STYLES */
+    .calc-container {
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 32px;
+      margin: 40px 0;
+    }
+
+    .grid-calc {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 920px) {
+      .grid-calc {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Existing Calculator Styles */
+    .card-calc {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      background: #fcfcfc;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="email"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      outline: none;
+      font-size: 14px;
+      background: #fff;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #c4b5fd;
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, .12);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .sep {
+      height: 1px;
+      background: var(--line);
+      margin: 20px 0;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      border: 1px solid #dbeafe;
+      background: var(--chip);
+      padding: 8px 12px;
+      border-radius: 99px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s;
+    }
+
+    .chip:hover {
+      border-color: #c4b5fd;
+      transform: translateY(-1px);
+    }
+
+    .chip.on {
+      background: var(--chip-on);
+      border-color: #a78bfa;
+      font-weight: 600;
+    }
+
+    .btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 18px 32px;
+      /* Bigger padding */
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 18px;
+      /* Bigger font */
+      transition: all 0.2s;
+    }
+
+    .primary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+      color: #fff;
+    }
+
+    .primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2);
+    }
+
+    .ghost {
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .ghost:hover {
+      background: #f9fafb;
+    }
+
+    .wa {
+      background: #25D366;
+      color: #fff;
+      border: 0;
+    }
+
+    .wa:hover {
+      background: #128c7e;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #f8faff;
+      border: 1px solid #e0e7ff;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .kpi-box {
+      text-align: center;
+    }
+
+    .kpi-box span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .kpi-box strong {
+      font-size: 18px;
+      color: var(--brand);
+    }
+
+    .results-text {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #374151;
+    }
+
+    .results-text h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: #111827;
+    }
+
+    .results-text ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+
+    /* FAQ NEW DESIGN */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-card {
+      display: flex;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .faq-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+
+    .faq-num-box {
+      background: #f3e8ff;
+      /* Soft purple */
+      color: #7c3aed;
+      /* Brand purple */
+      width: 60px;
+      min-width: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .faq-text {
+      padding: 20px 24px;
+      flex-grow: 1;
+    }
+
+    .faq-text h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 0;
+      margin-bottom: 6px;
+    }
+
+    .faq-text p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #64748b;
+      margin: 0;
+    }
+
+    .faq-text strong {
+      color: #1e293b;
+    }
+
+    /* MODAL STYLES */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      /* Slate 900 with opacity */
+      backdrop-filter: blur(4px);
+      display: none;
+      /* Hidden by default */
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg);
+      width: 100%;
+      max-width: 1000px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 24px;
+      position: relative;
+      padding: 40px 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px;
+    }
+
+    .modal-close:hover {
+      color: var(--ink);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 0;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+
+    /* Fix anchor scroll offset */
+    section[id] {
+      scroll-margin-top: 100px;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .message.active {
+      display: block;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .message.success {
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    /* CUSTOM CONTACT SECTION STYLES */
+    .contact-card-container {
+      background: #fff;
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      /* Soft shadow */
+      max-width: 900px;
+      margin: 20px auto 40px;
+      border: 1px solid #f0f0f0;
+    }
+
+    .contact-headline {
+      font-family: serif;
+      /* Using serif as seen in screenshot */
+      font-size: 36px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 24px;
+    }
+
+    .contact-sub {
+      color: #4b5563;
+      /* Gray text */
+      font-size: 16px;
+      margin-bottom: 32px;
+      display: block;
+    }
+
+    .btn-contact-action {
+      background-color: #c058d8;
+      /* Pink/Purple to match Value Proposition */
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 40px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-contact-action:hover {
+      background-color: #1e3a8a;
+    }
+
+    .contact-divider {
+      height: 1px;
+      background-color: #e5e7eb;
+      margin: 0 auto 40px;
+      width: 100%;
+    }
+
+    .contact-grid {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .contact-col {
+      text-align: center;
+    }
+
+    .contact-label {
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 16px;
+    }
+
+    .contact-link {
+      color: #9d174d;
+      /* Purple/Magenta */
+      text-decoration: underline;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .contact-text {
+      font-size: 16px;
+      color: #374151;
+    }
+
+    .contact-copyright {
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    /* VALUE PROPOSITION SECTION (New Second Section) */
+    .value-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 60px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      /* Soft shadow like contact card */
+      border: 1px solid #f0f0f0;
+      margin-top: -20px;
+      /* Slight overlap or adjustment */
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      /* Text wider than image */
+      gap: 40px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .value-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .value-headline {
+      font-family: serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1.3;
+      margin-bottom: 24px;
+    }
+
+    .value-btns {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .btn-value-primary {
+      background-color: #c058d8;
+      /* Pink/Purple from screenshot */
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .btn-value-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-value-secondary {
+      background-color: #fff;
+      color: #c058d8;
+      border: 1px solid #c058d8;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .btn-value-secondary:hover {
+      background-color: #fcefff;
+    }
+
+    .value-list-box {
+      background-color: #f9fafb;
+      /* Light gray box */
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .value-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .value-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 12px;
+      color: #374151;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .value-list li::before {
+      content: "•";
+      /* Bullet */
+      position: absolute;
+      left: 0;
+      color: #1f2937;
+      font-weight: bold;
+    }
+
+    .value-image-col img {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-width: 450px;
+      margin: 0 auto;
+    }
+
+    /* GLOBAL BOX SIZING */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    /* MOBILE RESPONSIVENESS FIXES */
+    @media (max-width: 768px) {
+
+      html,
+      body {
+        overflow-x: hidden;
+        width: 100vw;
+        position: relative;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav {
+        padding: 10px;
+        position: absolute;
+        /* Non-fixed on mobile can be safer for layout */
+      }
+
+      nav.scrolled {
+        position: fixed;
+      }
+
+      .nav-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo img {
+        height: 50px !important;
+        max-width: 140px;
+      }
+
+      .nav-links {
+        margin-top: 0 !important;
+        gap: 12px;
+        justify-content: center;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+
+      header {
+        padding: 140px 15px 40px;
+        border-radius: 0;
+      }
+
+      .wrap {
+        padding: 0 15px;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .sub {
+        font-size: 15px;
+      }
+
+      .cta-group,
+      .btns,
+      .value-btns {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+
+      .cta-group button,
+      .btns button,
+      .value-btns .btn-value-primary,
+      .value-btns .btn-value-secondary {
+        width: 100%;
+      }
+
+      .contact-card-container {
+        padding: 40px 20px;
+      }
+
+      .contact-headline {
+        font-size: 28px;
+      }
+
+      .contact-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .value-card {
+        padding: 30px 20px;
+      }
+
+      .value-headline {
+        font-size: 24px;
+      }
+
+      .grid-calc {
+        grid-template-columns: 1fr;
+      }
+
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-content">
+      <a href="#" class="logo">
+        <img src="./logo.png" alt="Zerotekia">
+      </a>
+      <div class="nav-links">
+        <a href="#servicios">Servicios</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contacto">Contacto</a>
+        <a href="javascript:void(0)" class="open-diag">Diagnóstico</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <!-- HERO -->
+    <header>
+      <h1>Cero trabajo repetitivo.<br>Procesos 100% inteligentes.</h1>
+      <p class="sub">Transformamos horas de tareas repetitivas en tiempo productivo. Reducimos errores. Liberamos a tu
+        equipo para crecer.</p>
+    </header>
+
+    <!-- VALUE PROPOSITION (Replaces Features) -->
+    <section id="features">
+      <div class="value-card">
+        <div class="value-grid">
+          <!-- Left: Content -->
+          <div class="value-content">
+            <h2 class="value-headline">Diseñamos automatizaciones que impactan métricas de negocio: más citas
+              confirmadas, menos tareas manuales, ROI en 1–2 meses.</h2>
+
+            <div class="value-btns">
+              <a href="javascript:void(0)" class="btn-value-primary open-diag">Diagnóstico + Estimación de ROI</a>
+              <a href="https://wa.me/34645273931" class="btn-value-secondary">Escríbenos vía WhatsApp</a>
+            </div>
+
+            <div class="value-list-box">
+              <ul class="value-list">
+                <li>Implementación en <strong>semanas</strong>, no meses</li>
+                <li>Trabajamos con tu stack actual (CRM, e-commerce, ERP)</li>
+                <li>Soporte y mejoras continuas</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right: Image -->
+          <div class="value-image-col">
+            <img src="./diagrama.png" alt="Diagrama de Automatización">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="servicios">
+      <h2 style="font-family: serif; font-size: 40px; margin-bottom: 24px;">Servicios que transforman tu negocio</h2>
+      <p class="section-desc" style="font-weight: 600; color: #111827;">Elige el sistema que necesitas. Lo conectamos
+        con tus herramientas y lo medimos con KPIs.</p>
+
+      <div class="features-grid">
+        <!-- 1. Consultoría -->
+        <div class="feature-card">
+          <i class="fa-solid fa-display"></i>
+          <h3 style="font-family: serif; font-size: 20px;">Consultoría estratégica en automatización con IA</h3>
+          <ul>
+            <li>Auditamos procesos y datos</li>
+            <li>Priorizamos por ROI</li>
+            <li>Entregamos un plan de 30 días con tareas y entregables</li>
+          </ul>
+        </div>
+
+        <!-- 2. Agentes IA s -->
+        <div class="feature-card">
+          <i class="fa-solid fa-circle-nodes"></i>
+          <h3 style="font-family: serif; font-size: 20px;">Agentes IA para atención al cliente y ventas</h3>
+          <ul>
+            <li>WhatsApp, web, email, Telegram</li>
+            <li>Captura y cualificación de leads</li>
+            <li>Traspaso al equipo con contexto</li>
+          </ul>
+        </div>
+
+        <!-- 3. Agentes Voz -->
+        <div class="feature-card">
+          <i class="fa-solid fa-brain"></i>
+          <h3 style="font-family: serif; font-size: 20px;">Agentes de voz telefónicos</h3>
+          <ul>
+            <li>Atendemos llamadas 24/7</li>
+            <li>Gestionamos citas y recogida de datos</li>
+            <li>Registramos resumen y resultado en tu CRM</li>
+          </ul>
+        </div>
+
+        <!-- 4. Procesos empresariales -->
+        <div class="feature-card">
+          <i class="fa-solid fa-industry"></i>
+          <h3 style="font-family: serif; font-size: 20px;">Automatización de procesos empresariales</h3>
+          <ul>
+            <li>Diseñamos flujos de operaciones y backoffice</li>
+            <li>Añadimos validaciones y trazabilidad</li>
+            <li>Activamos alertas cuando importa</li>
+          </ul>
+        </div>
+
+        <!-- 5. Facturas -->
+        <div class="feature-card">
+          <i class="fa-solid fa-file-invoice"></i>
+          <h3 style="font-family: serif; font-size: 20px;">Automatización de facturas</h3>
+          <ul>
+            <li>Automatizamos factura desde pedido o albarán</li>
+            <li>Enviamos estados al cliente</li>
+            <li>Reportamos errores y tiempos cada mes</li>
+          </ul>
+        </div>
+
+        <!-- 6. RAG -->
+        <div class="feature-card">
+          <i class="fa-solid fa-user-shield"></i>
+          <h3 style="font-family: serif; font-size: 20px;">Agentes RAG con base de conocimiento</h3>
+          <ul>
+            <li>Convertimos tus documentos en respuestas</li>
+            <li>Creamos búsqueda interna para tu equipo</li>
+            <li>Controlamos permisos por rol</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS METRICS -->
+
+
+
+
+    <!-- USE CASES -->
+    <section id="casos">
+      <h2>Casos de Uso</h2>
+      <p class="section-desc">Soluciones específicas por departamento.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <i class="fa-solid fa-rocket"></i>
+          <h3>Gestión de Leads</h3>
+          <p>Captura automática, scoring con IA y asignación inmediata o respuesta automática. <br><strong>KPI:</strong>
+            +20% conversión.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fa-solid fa-database"></i>
+          <h3>CRM Inteligente</h3>
+          <p>Actualización automática de estados, enriquecimiento de datos y recordatorios de seguimiento.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fa-solid fa-box-open"></i>
+          <h3>Pedidos</h3>
+          <p>Procesamiento automático de pedidos entrantes, envío a logística y notificaciones al cliente.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <h3>Facturación</h3>
+          <p>Generación y envío de facturas al cerrar venta. Conciliación bancaria básica.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fa-solid fa-chart-pie"></i>
+          <h3>Reporting Automático</h3>
+          <p>Informes semanales en Slack/Email y dashboards en tiempo real sin intervención manual.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fa-solid fa-comments"></i>
+          <h3>Soporte y Éxito</h3>
+          <p>Triaje automático de tickets, respuestas sugeridas y detección de clientes en riesgo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" style="background:#fff; border-radius:24px; padding:40px;">
+      <h2 style="font-family: serif; font-size: 32px; text-align: center; margin-bottom: 30px;">Preguntas frecuentes
+      </h2>
+
+      <div class="faq-list">
+        <!-- Q1 -->
+        <div class="faq-card">
+          <div class="faq-num-box">1</div>
+          <div class="faq-text">
+            <h3>¿En cuánto tiempo veo resultados?</h3>
+            <p>Implementamos en semanas, no meses. Con hitos claros y comunicación constante para que veas el progreso
+              desde el día uno.</p>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="faq-card">
+          <div class="faq-num-box">2</div>
+          <div class="faq-text">
+            <h3>¿Qué herramientas integráis?</h3>
+            <p>CRM (HubSpot, Salesforce), e-commerce (Shopify, WooCommerce), Google Workspace, ERPs y más de 400
+              aplicaciones disponibles.</p>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="faq-card">
+          <div class="faq-num-box">3</div>
+          <div class="faq-text">
+            <h3>¿Qué incluye el soporte?</h3>
+            <p>Mantenimiento proactivo, actualizaciones, mejoras continuas y soporte técnico para garantizar el
+              funcionamiento óptimo.</p>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="faq-card">
+          <div class="faq-num-box">4</div>
+          <div class="faq-text">
+            <h3>¿Necesito cambiar de software?</h3>
+            <p>No. Hacemos que las herramientas que ya usas trabajen por ti de forma inteligente y coordinada.</p>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="faq-card">
+          <div class="faq-num-box">5</div>
+          <div class="faq-text">
+            <h3>¿Cómo garantizáis la seguridad?</h3>
+            <p>Aplicamos buenas prácticas de seguridad, permisos mínimos necesarios y registros completos de toda la
+              actividad automatizada.</p>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="faq-card">
+          <div class="faq-num-box">6</div>
+          <div class="faq-text">
+            <h3>¿Cómo calculáis el ROI?</h3>
+            <p>Partimos de tus datos (leads, conversión, ticket y/o horas/errores), implementamos el sistema y medimos
+              la mejora. Calculamos el retorno por <strong>ingresos recuperados</strong> (leads atendidos a tiempo) o
+              por <strong>eficiencia</strong> (horas y errores evitados). Compartimos un <strong>informe
+                mensual</strong> con KPIs y siguientes pasos.</p>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="faq-card">
+          <div class="faq-num-box">7</div>
+          <div class="faq-text">
+            <h3>¿Qué incluye el mantenimiento?</h3>
+            <p><strong>Mantenimiento y mejora continua:</strong> monitorizamos, damos soporte con <strong>SLA</strong> y
+              optimizamos tus flujos cada mes. Recibirás un <strong>informe con KPIs</strong> (citas, SLA, AHT, pedidos,
+              errores) y un <strong>roadmap trimestral</strong> con las próximas mejoras.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <!-- FOOTER / CONTACT -->
+    <footer id="contacto">
+      <div class="contact-card-container">
+        <h2 class="contact-headline">¿Listo para transformar tu negocio?</h2>
+        <span class="contact-sub">Deja que la tecnología trabaje por ti mientras tu equipo se enfoca en hacer crecer la
+          empresa</span>
+
+        <button class="btn-contact-action open-diag">Diagnóstico + Estimación de ROI</button>
+
+        <div class="contact-divider"></div>
+
+        <div class="contact-grid">
+          <div class="contact-col">
+            <span class="contact-label">Email</span>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=galvin@zerotekia.com" class="contact-link"
+              target="_blank">galvin@zerotekia.com</a>
+          </div>
+          <div class="contact-col">
+            <span class="contact-label">WhatsApp</span>
+            <a href="https://wa.me/34645273931" class="contact-link" target="_blank">645273931</a>
+          </div>
+          <div class="contact-col" style="display:flex; flex-direction:column; gap:8px;">
+            <a href="./privacidad.html" class="contact-link">Información legal y privacidad</a>
+            <a href="./terminos.html" class="contact-link">Términos y condiciones</a>
+          </div>
+        </div>
+
+        <div class="contact-copyright">
+          © Zerotekia - Automatización inteligente para empresas que crecen
+        </div>
+      </div>
+    </footer>
+
+    <!-- DIAGNÓSTICO MODAL -->
+    <div class="modal-overlay" id="diagnosticoModal">
+      <div class="modal-content">
+        <button class="modal-close" id="closeModal"
+          style="position: absolute; top: 20px; right: 20px; font-size: 24px; color: var(--muted); cursor: pointer; background: none; border: none; padding: 8px;">&times;</button>
+        <section id="diagnostico" style="padding: 0;">
+          <h2 style="font-family: serif; font-size: 32px; text-align: center;">Diagnóstico de Automatización</h2>
+          <p class="section-desc" style="text-align: center;">Detectamos dónde impacta más automatizar en tu empresa y
+            estimamos el ahorro mensual inmediato.</p>
+
+          <div class="calc-container"
+            style="margin: 20px 0 0; background: #fff; border-radius: 24px; border: 1px solid var(--line); box-shadow: var(--shadow); padding: 32px;">
+            <div class="grid-calc" style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+              <!-- INPUTS -->
+              <div class="card-calc"
+                style="border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; background: #fcfcfc;">
+                <h3 style="margin-bottom:16px; font-size:18px;">1. Tus Datos</h3>
+                <label>Email *</label>
+                <input id="email" type="email" placeholder="tu@email.com" style="margin-bottom:12px;">
+                <div style="font-size:12px; color:#6b7280; display:flex; gap:8px;">
+                  <input type="checkbox" id="consent">
+                  <span>Acepto la Política de Privacidad y el tratamiento de datos.</span>
+                </div>
+
+                <div class="sep" style="height: 1px; background: var(--line); margin: 20px 0;"></div>
+
+                <h3 style="margin-bottom:16px; font-size:18px;">2. Métricas</h3>
+                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+                  <div>
+                    <label>Horas/día repetitivas</label>
+                    <select id="hoursDay">
+                      <option value="1">1 hora</option>
+                      <option value="2">2 horas</option>
+                      <option value="4">4 horas</option>
+                      <option value="6">6 horas</option>
+                      <option value="8">8+ horas</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>Días/mes</label>
+                    <select id="daysMonth" style="width: 100%;">
+                      <option value="20">20 días</option>
+                      <option value="22" selected>22 días</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+                  <div>
+                    <label>Coste hora (€)</label>
+                    <input id="costHour" type="number" placeholder="Ej: 25">
+                  </div>
+                  <div>
+                    <label>Leads/día</label>
+                    <select id="leadsDay">
+                      <option value="0-5">0-5</option>
+                      <option value="6-15">6-15</option>
+                      <option value="16-40">16-40</option>
+                      <option value="40+">40+</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;">
+                  <div>
+                    <label>Respuesta a leads</label>
+                    <select id="respTime">
+                      <option value="lt5">&lt; 5 min</option>
+                      <option value="5-10">5-10 min</option>
+                      <option value="10-60">1 hora</option>
+                      <option value="gt24">&gt; 24h</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>¿Usáis CRM?</label>
+                    <select id="crm">
+                      <option value="yes">Sí</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style="margin-top:16px;">
+                  <label>Problemas principales</label>
+                  <div class="chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                    <div class="chip" data-key="leads"
+                      style="border: 1px solid #dbeafe; background: var(--chip); padding: 8px 12px; border-radius: 99px; cursor: pointer; font-size: 13px; transition: all 0.15s;">
+                      Leads sin respuesta</div>
+                    <div class="chip" data-key="follow"
+                      style="border: 1px solid #dbeafe; background: var(--chip); padding: 8px 12px; border-radius: 99px; cursor: pointer; font-size: 13px; transition: all 0.15s;">
+                      Seguimiento pobre</div>
+                    <div class="chip" data-key="time"
+                      style="border: 1px solid #dbeafe; background: var(--chip); padding: 8px 12px; border-radius: 99px; cursor: pointer; font-size: 13px; transition: all 0.15s;">
+                      Pérdida de tiempo</div>
+                    <div class="chip" data-key="dupes"
+                      style="border: 1px solid #dbeafe; background: var(--chip); padding: 8px 12px; border-radius: 99px; cursor: pointer; font-size: 13px; transition: all 0.15s;">
+                      Datos duplicados</div>
+                    <div class="chip" data-key="billing"
+                      style="border: 1px solid #dbeafe; background: var(--chip); padding: 8px 12px; border-radius: 99px; cursor: pointer; font-size: 13px; transition: all 0.15s;">
+                      Errores facturación</div>
+                  </div>
+                </div>
+
+                <div class="btns" style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+                  <button class="primary" id="btnCalc"
+                    style="width:100%; border:0; border-radius:12px; padding:18px 32px; cursor:pointer; font-weight:600; font-size:18px; background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%); color:#fff;">Calcular
+                    Diagnóstico</button>
+                  <button class="ghost" id="btnClear"
+                    style="width:100%; border:0; border-radius:12px; padding:18px 32px; cursor:pointer; font-weight:600; font-size:18px; background: #fff; border: 1px solid var(--line); color: var(--ink);">Limpiar</button>
+                </div>
+
+                <div id="msgBox" class="message"></div>
+              </div>
+
+              <!-- RESULTS -->
+              <div class="card-calc" id="resultsPanel"
+                style="opacity:0.6; pointer-events:none; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; background: #fcfcfc;">
+                <h3 style="margin-bottom:16px; font-size:18px;">Resultado</h3>
+
+                <div class="kpis"
+                  style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #f8faff; border: 1px solid #e0e7ff; border-radius: 16px; padding: 16px;">
+                  <div class="kpi-box" style="text-align: center;">
+                    <span style="display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px;">Ahorro
+                      Mensual</span>
+                    <strong id="kpiMoney" style="font-size: 18px; color: var(--brand);">—</strong>
+                  </div>
+                  <div class="kpi-box" style="text-align: center;">
+                    <span style="display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px;">Horas
+                      Recupradas</span>
+                    <strong id="kpiHours" style="font-size: 18px; color: var(--brand);">—</strong>
+                  </div>
+                  <div class="kpi-box" style="text-align: center;">
+                    <span style="display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px;">ROI
+                      Estimado</span>
+                    <strong id="kpiRoi" style="font-size: 18px; color: var(--brand);">—</strong>
+                  </div>
+                  <div class="kpi-box" style="text-align: center;">
+                    <span style="display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px;">Foco
+                      Principal</span>
+                    <strong id="kpiZone"
+                      style="color: var(--brand); font-size:14px; background:#eef2ff; padding:2px 8px; border-radius:4px;">—</strong>
+                  </div>
+                </div>
+
+                <div class="results-text" style="margin-top: 20px; font-size: 14px; line-height: 1.6; color: #374151;">
+                  <h3 style="font-size: 15px; margin-bottom: 6px; color: #111827;">Qué hemos detectado:</h3>
+                  <p id="detected" style="color:#6b7280; margin-bottom:16px;">—</p>
+
+                  <h3 style="font-size: 15px; margin-bottom: 6px; color: #111827;">Acciones sugeridas:</h3>
+                  <ul id="actions" style="color:#6b7280; padding-left: 20px; margin-top: 8px;">
+                    <li>—</li>
+                  </ul>
+                </div>
+
+                <button class="wa" id="btnWa" disabled
+                  style="width:100%; margin-top:24px; border:0; border-radius:12px; padding:18px 32px; cursor:pointer; font-weight:600; font-size:18px; background: #25D366; color: #fff;">
+                  Agendar Resultados por WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    // MODAL LOGIC
+    const modal = $("diagnosticoModal");
+    const openBtns = document.querySelectorAll(".open-diag");
+    const closeBtn = $("closeModal");
+
+    openBtns.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        // Find if this is the large contact button to prevent default jump if needed,
+        // though btn-contact-action buttons are usually styled buttons inside <a>.
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden"; // Prevent scroll
+      });
+    });
+
+    closeBtn.addEventListener("click", () => {
+      modal.classList.remove("active");
+      document.body.style.overflow = ""; // Restore scroll
+    });
+
+    // Close on click outside
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("active");
+        document.body.style.overflow = "";
+      }
+    });
+
+    // DIAGNOSTICO LOGIC (Restored and adapted)
+    const WEBHOOK_URL = "https://n8n.zerotekia.com/webhook/bbc36668-46ca-4bd2-9de4-22da5aea56ff";
+    const WHATSAPP_NUMBER = "34645273931";
+    // Reuse $ defined above
+    const selectedProblems = new Set();
+    let lastResult = null;
+
+    // CHIPS LOGIC
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', function () {
+        const key = this.getAttribute('data-key');
+        if (selectedProblems.has(key)) {
+          selectedProblems.delete(key);
+          this.classList.remove('on');
+        } else {
+          selectedProblems.add(key);
+          this.classList.add('on');
+        }
+      });
+    });
+
+    // COMPUTE LOGIC
+    function compute(inputs) {
+      const hoursDay = parseFloat(inputs.hoursDay);
+      const daysMonth = parseFloat(inputs.daysMonth);
+      const hoursMonth = hoursDay * daysMonth;
+      const costHour = inputs.costHour ? parseFloat(inputs.costHour) : 25;
+
+      let base = 0.40;
+      let extra = 0;
+      inputs.problems.forEach(() => extra += 0.06);
+      if (inputs.crm === "no") extra += 0.05;
+      if (inputs.respTime === "gt24" || inputs.respTime === "noFollow") extra += 0.08;
+
+      const ratio = Math.max(0.15, Math.min(0.85, base + extra));
+      const autoHours = Math.round(hoursMonth * ratio);
+      const money = Math.round(autoHours * costHour);
+      const roiMonths = money > 0 ? Math.max(1, Math.round(900 / money)) : 1;
+
+      // Determine Zone
+      let sales = 0, ops = 0, support = 0;
+      if (inputs.problems.has("leads") || inputs.problems.has("follow")) sales += 3;
+      if (inputs.problems.has("dupes") || inputs.problems.has("billing")) ops += 3;
+      if (inputs.crm === "no") { sales += 1; support += 1; }
+
+      let zone = "Operaciones";
+      if (sales > ops && sales > support) zone = "Ventas";
+      if (support > sales && support > ops) zone = "Soporte";
+
+      return { money, autoHours, roiMonths, zone };
+    }
+
+    function getCopy(zone) {
+      if (zone === "Ventas") return {
+        detected: "Cuello de botella en cualificación y seguimiento.",
+        actions: ["Automatizar respuesta inmediata a leads.", "Secuencia de seguimiento por WhatsApp.", "Sincronización CRM."]
+      };
+      if (zone === "Soporte") return {
+        detected: "Exceso de consultas repetitivas manuales.",
+        actions: ["Chatbot con IA para preguntas frecuentes.", "Triaje automático de tickets.", "Base de conocimiento dinámica."]
+      };
+      return {
+        detected: "Fricción administrativa y tareas manuales de datos.",
+        actions: ["Automatizar facturas recurrentes.", "Conciliación bancaria.", "Sincronización de bases de datos."]
+      };
+    }
+
+    // UI HANDLERS
+    $("btnCalc").addEventListener("click", () => {
+      const email = $("email").value;
+      if (!email || !email.includes("@")) {
+        alert("Por favor, introduce un email válido.");
+        return;
+      }
+      if (!$("consent").checked) {
+        alert("Debes aceptar la política de privacidad.");
+        return;
+      }
+
+      const inputs = {
+        email,
+        hoursDay: $("hoursDay").value,
+        daysMonth: $("daysMonth").value,
+        costHour: $("costHour").value,
+        respTime: $("respTime").value,
+        crm: $("crm").value,
+        problems: selectedProblems
+      };
+
+      const res = compute(inputs);
+      const copy = getCopy(res.zone);
+
+      // Update UI
+      $("kpiMoney").textContent = res.money + " €/mes";
+      $("kpiHours").textContent = res.autoHours + " h";
+      $("kpiRoi").textContent = res.roiMonths + " meses";
+      $("kpiZone").textContent = res.zone;
+      $("detected").textContent = copy.detected;
+
+      const ul = $("actions");
+      ul.innerHTML = "";
+      copy.actions.forEach(a => {
+        const li = document.createElement("li");
+        li.textContent = a;
+        ul.appendChild(li);
+      });
+
+      // Enable Result Panel
+      $("resultsPanel").style.opacity = "1";
+      $("resultsPanel").style.pointerEvents = "all";
+      $("btnWa").disabled = false;
+
+      // Scroll to results within modal if needed, but the modal is scrollable.
+      $("resultsPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+      lastResult = { ...inputs, ...res };
+
+      // Send Webhook (Fire & Forget)
+      fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lastResult)
+      }).catch(console.error);
+    });
+
+    $("btnClear").addEventListener("click", () => {
+      // Don't reload location because that closes the modal.
+      // Just reset fields manually.
+      $("email").value = "";
+      $("consent").checked = false;
+      $("costHour").value = "";
+      $("resultsPanel").style.opacity = "0.6";
+      $("resultsPanel").style.pointerEvents = "none";
+      $("btnWa").disabled = true;
+      selectedProblems.clear();
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    });
+
+    $("btnWa").addEventListener("click", () => {
+      if (!lastResult) return;
+      const text = `Hola, he hecho el diagnóstico en Zerotekia.\nEmail: ${lastResult.email}\nZona:
+    ${lastResult.zone}\nAhorro estimado: ${lastResult.money}€/mes`;
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`);
+    });
+    // Scroll effect for nav
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        document.querySelector("nav").classList.add("scrolled");
+      } else {
+        document.querySelector("nav").classList.remove("scrolled");
+      }
+    });
+  </script>
+</body>
+
+</html>
